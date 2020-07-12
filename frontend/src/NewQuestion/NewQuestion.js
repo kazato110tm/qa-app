@@ -7,7 +7,7 @@ class NewQuestion extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            disable: false,
+            disabled: false,
             title: '',
             description: '',
         };
@@ -27,15 +27,18 @@ class NewQuestion extends Component {
 
     async submit() {
         this.setState({
-            disable: true,
+            disabled: true,
         });
-
+        console.log("test1");
+        console.log(this.state)
+        console.log(auth0Client.getIdToken())
         await axios.post('http://localhost:8081', {
             title: this.state.title,
             description: this.state.description,
         }, {
             headers: { 'Authorization': `Bearer ${auth0Client.getIdToken()}` }
         });
+        console.log("test2");
 
         this.props.history.push('/');
     }
@@ -61,7 +64,7 @@ class NewQuestion extends Component {
                                 <div className="form-group">
                                     <label htmlFor="ecampleInputEmail1">Description:</label>
                                     <input
-                                        disabled={this.state.dasabled}
+                                        disabled={this.state.disabled}
                                         type="text"
                                         onBlur={(e) => { this.updateDescription(e.target.value) }}
                                         className="form-control"
@@ -69,7 +72,7 @@ class NewQuestion extends Component {
                                     />
                                 </div>
                                 <button
-                                    disable={this.state.disabled}
+                                    disabled={this.state.disabled}
                                     className="btn btn-primary"
                                     onClick={() => {this.submit()}}>
                                     Submit

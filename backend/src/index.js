@@ -48,7 +48,7 @@ const checkJwt = jwt({
         cache: true,
         rateLimit: true,
         jwksRequestsPerMinute: 5,
-        jwksUri: `https://dexit.us.auth0.com/.well-known/jwls.json`
+        jwksUri: `https://dexit.us.auth0.com/.well-known/jwks.json`
     }),
 
     audience: '08sRDwrEC9dWVL2vF1XogAt6PqWgSKcX',
@@ -58,7 +58,8 @@ const checkJwt = jwt({
 
 // insert a new question
 app.post('/', checkJwt, (req, res) => {
-    const {title, description} = req.body;
+    const { title, description } = req.body;
+    console.log(req)
     const newQuestion ={
         id: questions.length + 1,
         title,
