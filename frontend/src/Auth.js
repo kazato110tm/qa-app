@@ -41,18 +41,33 @@ class Auth{
                 if (!authResult || !authResult.idToken) {
                     return reject(err);
                 }
-                this.idToken = authResult.idToken;
-                this.profile = authResult.idTokenPayload;
-                this.expiresAt = authResult.idTokenPayload.exp * 1000;
+                this.setSession(authResult);
                 resolve();
             });
         })
     }
 
+    setSession(authResult) {
+        this.idToken = authResult.idToken;
+        this.profile = authResult.idTokenPayload;
+        this.expiresAt = authResult.idTokenPayload.exp * 1000;
+    }
+
     signOut() {
-        this.idToken = null;
-        this.profile = null;
-        this.expiresAt = null;
+        this.auth0.logout({
+            returnTo: 'http://localhsot:3000',
+            clientID: '08sRDwrEC9dWVL2vF1XogAt6PqWgSKcX',
+        });
+    }
+
+    sikentAuth() {
+        return new Promise((resolve, reject) => {
+            this.auth0.checkSession({}, (err, authResult) => {
+                if (err) return reject(err);
+                this.setSession(authResult);
+                resolve();
+            });
+        });
     }
 }
 
